@@ -1,7 +1,7 @@
 4n6k_volatility_installer.sh
 ============================
 
-Install Volatility for Linux automatically.
+Install Volatility 2.4 for Linux automatically.
 
 What Is It?
 -----------
