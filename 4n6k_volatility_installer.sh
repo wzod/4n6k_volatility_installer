@@ -1,15 +1,32 @@
 #!/bin/bash
 
 # 4n6k_volatility_installer.sh
-  # written by 4n6k (4n6k.dan@gmail.com)
-  # Installs Volatility for Ubuntu Linux with one command.
-  # Run this script from the directory in which you'd like to install Volatility.
-  # "It Works" Edition v1.0 (8/24/2014)
-  # Tested on stock Ubuntu 12.04 + 14.04 Desktop
-  # More at http://www.4n6k.com + http://www.volatilityfoundation.org
+# v1.1.0 (8/28/2014)
+# Installs Volatility for Ubuntu Linux with one command.
+# Run this script from the directory in which you'd like to install Volatility.
+# Tested on stock Ubuntu 12.04 + 14.04 + SIFT 3
+# More at http://www.4n6k.com + http://www.volatilityfoundation.org
+
+# Copyright (C) 2014 4n6k (4n6k.dan@gmail.com)
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # Define constants
-SETUP_DIR="${PWD}"/"volatility_setup"
+PROGNAME="${0}"
+INSTALL_DIR="${1}"
+SETUP_DIR="${INSTALL_DIR}"/"volatility_setup"
 LOGFILE="${SETUP_DIR}"/"install_vol.log"
 ARCHIVES=('distorm3.zip' 'pycrypto-2.6.1.tar.gz' 'ipython-2.1.0.tar.gz' \
           '2.0.5.tar.gz' 'setuptools-5.7.tar.gz' 'Imaging-1.1.7.tar.gz' \
@@ -18,6 +35,20 @@ HASHES=('2cd594169fc96b4442056b7494c09153' '55a61a054aa66812daf5161a0d5d7eda' \
         '785c7b6364c6a0dd34aa4ea970cf83b9' '05df2ec474a40afd5f84dff94392e36f' \
         '81f980854a239d60d074d6ba052e21ed' 'fc14a54e1ce02a0225be8854bfba478e' \
         '1d4bb952a4f72cd985a2e59e5306f277' '4f9ad730fb2174c90182cc29cb249d20' )
+
+# Program usage dialog
+usage() {
+  echo -e "\nHere is an example of how you should run this script:"
+  echo -e "  > sudo bash ${PROGNAME} /home/4n6k"
+  echo -e "Result: Volatility will be installed to /home/4n6k/volatility_2.4\n"
+}
+
+# Usage check; determine if usage should be printed
+chk_usage() {
+  if [[ "${INSTALL_DIR}" =~ ^(((-{1,2})([Hh]$|[Hh][Ee][Ll][Pp]$))|$) ]]; then
+    usage ; exit 1
+  fi
+}
 
 # Status header for script progress
 status() {
@@ -34,8 +65,8 @@ setup() {
     echo "" ; phantom "Setup directory already exists. Skipping..."
     cd "${SETUP_DIR}"
   else
-    mkdir volatility_setup
-    echo "/usr/local/lib" >> /etc/ld.so.conf
+    mkdir -p "${SETUP_DIR}"
+    echo "/usr/local/lib" >> /etc/ld.so.conf.d/volatility.conf
     cd "${SETUP_DIR}"
   fi
 }
@@ -114,6 +145,8 @@ install() {
     easy_install --upgrade pytz
   # iPython
     cd ipython-2.1.0 && py_install
+  # SIFT 3.0 check + fix
+    sift_fix
   # Volatility
     mv -f volatility-2.4 .. ; cd ../volatility-2.4 && chmod +x vol.py
     ln -f -s "${PWD}"/vol.py /usr/local/bin/vol.py
@@ -158,6 +191,16 @@ done_msg() {
   phantom "Done."
 }
 
+# Check for SIFT 3.0 and fix
+sift_fix() {
+  if [[ -d /usr/share/sift ]]; then
+    apt-get install libxml2 libxml2-dev libxslt1.1 libxslt1-dev -y --force-yes
+    pip install lxml --upgrade
+  else
+    :
+  fi
+}
+
 # Text echo enhancement
 phantom() {
   msg="${1}"
@@ -168,13 +211,14 @@ phantom() {
     fi
   let lnmsg=$(expr length "${msg}")-1
   for (( i=0; i <= "${lnmsg}"; i++ )); do
-    echo -n "${msg:$i:1}" | tee -a ${LOGFILE}
+    echo -n "${msg:$i:1}" | tee -a "${LOGFILE}"
     sleep "${speed}"
   done ; echo ""
 }
 
 # Main program execution flow
 main() {
+  chk_usage
   setup
   status "Downloading Volatility 2.4 and dependency source code..."
     download && done_msg

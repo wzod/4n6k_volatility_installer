@@ -5,11 +5,11 @@ Install Volatility 2.4 for Linux automatically.
 
 What Is It?
 -----------
-4n6k_volatility_installer.sh is a bash script that installs Volatility 2.4 (and all dependencies) for Ubuntu Linux with one command.
+`4n6k_volatility_installer.sh` is a bash script that installs Volatility 2.4 (and all dependencies) for Ubuntu Linux with one command.
 
 Why Do I Need It?
 -----------------
-Compiling source on Linux can be a pain. Dependency hunting wastes time and drives people away from considering Linux builds of cross-platform software. With this script, you can (1) skip all of the dependency frustration, (2) get right into using the newest version of Volatility, and (3) leverage the arguably more powerful and versatile *nix shell. No longer do you have to worry about whether or not you "have everything."
+Compiling source on Linux can be a pain. Dependency hunting wastes time and drives people away from considering Linux builds of cross-platform software. With this script, you can (1) skip all of the dependency frustration, (2) get right into using the newest version of Volatility, and (3) leverage the arguably more powerful and versatile Unix shell. No longer do you have to worry about whether or not you "have everything."
 
 What's Required?
 ----------------
@@ -32,7 +32,17 @@ Specifically, 4n6k_volatility_installer.sh does the following:
 
 How Do I Use It?
 ----------------
-From a terminal, run: `sudo bash 4n6k_volatility_installer.sh`
+Volatility will be installed to the directory you specify.
+
+* From a terminal, run: 
+  * `sudo bash 4n6k_volatility_installer.sh /home/dan`
+
+In the above example, the following directories will be created:
+
+* /home/dan/volatility_setup 
+  * Contains dependency source code and the install_log.txt file.
+* /home/dan/volatility_2.4
+  * Contains the Volatility 2.4 install.
 
 Where Can I Download It?
 ------------------------
@@ -45,5 +55,9 @@ Bottom Line?
 Don't be afraid of the terminal. Read the source for this script and understand how it works. Automation is acceptable only after you understand what is happening behind the scenes.
 
 I'm open to making this script better. If you see a problem with the code or can suggest improvements, let me know and I'll see what I can do.
+
+Feedback Thanks
+---------------
+@The_IMOL, Joachim Metz, @dunit50, and @iMHLv2.
 
 Thanks to the Volatility team for writing an amazing tool. Go to http://www.volatilityfoundation.org for more info.
