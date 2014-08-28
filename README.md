@@ -13,7 +13,7 @@ Compiling source on Linux can be a pain. Dependency hunting wastes time and driv
 
 What's Required?
 ----------------
-An internet connection and an APT-based Linux distribution [for the time being]. This script has been tested on stock Ubuntu 12.04 and Ubuntu 14.04.
+An internet connection and an APT-based Linux distribution [for the time being]. This script has been tested on stock Ubuntu 12.04 and Ubuntu 14.04. Some testing has been done to support SIFT Workstation 3.0.
 
 What Does It Do?
 ----------------
@@ -48,7 +48,7 @@ Where Can I Download It?
 ------------------------
 You can download the script from this Github page or by right clicking and saving [this link](https://dl.4n6k.com/p/volinux/4n6k_volatility_installer.sh). 
 
-`MD5 Hash: b604ad1fe944572cbff42c4638fd6145`
+`MD5 Hash: d9732690fcc6f6f3c89137bb00736004`
 
 Bottom Line?
 ------------
