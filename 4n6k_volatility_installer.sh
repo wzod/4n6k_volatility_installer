@@ -40,13 +40,18 @@ HASHES=('2cd594169fc96b4442056b7494c09153' '55a61a054aa66812daf5161a0d5d7eda' \
 usage() {
   echo -e "\nHere is an example of how you should run this script:"
   echo -e "  > sudo bash ${PROGNAME} /home/4n6k"
-  echo -e "Result: Volatility will be installed to /home/4n6k/volatility_2.4\n"
+  echo -e "Result: Volatility will be installed to /home/4n6k/volatility_2.4"
+  echo -e "***NOTE*** Be sure to use a FULL PATH for the install directory.\n"
 }
 
 # Usage check; determine if usage should be printed
 chk_usage() {
   if [[ "${INSTALL_DIR}" =~ ^(((-{1,2})([Hh]$|[Hh][Ee][Ll][Pp]$))|$) ]]; then
     usage ; exit 1
+  elif ! [[ "${INSTALL_DIR}" =~ ^/.*+$ ]]; then
+    usage ; exit 1
+  else
+    :
   fi
 }
 
@@ -62,13 +67,13 @@ status() {
 # Setup for initial installation environment
 setup() {
   if [[ -d "${SETUP_DIR}" ]]; then
-    echo "" ; phantom "Setup directory already exists. Skipping..."
-    cd "${SETUP_DIR}"
+    echo "" ; touch "${LOGFILE}"
+    phantom "Setup directory already exists. Skipping..."
   else
-    mkdir -p "${SETUP_DIR}"
+    mkdir -p "${SETUP_DIR}" ; touch "${LOGFILE}"
     echo "/usr/local/lib" >> /etc/ld.so.conf.d/volatility.conf
-    cd "${SETUP_DIR}"
   fi
+  cd "${SETUP_DIR}"
 }
 
 # Download Volatility and its dependencies
