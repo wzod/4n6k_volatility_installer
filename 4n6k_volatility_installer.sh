@@ -114,7 +114,7 @@ verify() {
 
 # Extract the downloaded archives
 extract() {
-  sudo apt-get install unzip 
+  sudo apt-get -y install unzip 
   for archive in "${ARCHIVES[@]}"; do
     local ext ; ext=$(echo "${archive}" | sed 's|.*\.||')
     if [[ "${ext}" =~ ^(tgz|gz)$ ]]; then
