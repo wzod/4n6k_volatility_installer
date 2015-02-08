@@ -28,13 +28,13 @@ PROGNAME="${0}"
 INSTALL_DIR="${1}"
 SETUP_DIR="${INSTALL_DIR}"/"volatility_setup"
 LOGFILE="${SETUP_DIR}"/"install_vol.log"
-ARCHIVES=('distorm3.zip' 'pycrypto-2.6.1.tar.gz' 'ipython-2.1.0.tar.gz' \
-          '2.0.5.tar.gz' 'setuptools-5.7.tar.gz' 'Imaging-1.1.7.tar.gz' \
-          'v3.1.0.tar.gz' 'volatility-2.4.tar.gz'                       )
+ARCHIVES=('distorm3.zip' 'pycrypto-2.6.1.tar.gz' '2.0.5.tar.gz' \
+          'setuptools-5.7.tar.gz' 'Imaging-1.1.7.tar.gz' \
+          'v3.2.0.tar.gz' 'volatility-2.4.tar.gz'                       )
 HASHES=('2cd594169fc96b4442056b7494c09153' '55a61a054aa66812daf5161a0d5d7eda' \
-        '785c7b6364c6a0dd34aa4ea970cf83b9' '05df2ec474a40afd5f84dff94392e36f' \
-        '81f980854a239d60d074d6ba052e21ed' 'fc14a54e1ce02a0225be8854bfba478e' \
-        '1d4bb952a4f72cd985a2e59e5306f277' '4f9ad730fb2174c90182cc29cb249d20' )
+        '05df2ec474a40afd5f84dff94392e36f' '81f980854a239d60d074d6ba052e21ed' \
+        'fc14a54e1ce02a0225be8854bfba478e' '920ac91cc9a48eecab688f30e112898f' \
+        '4f9ad730fb2174c90182cc29cb249d20' )
 
 # Program usage dialog
 usage() {
@@ -87,11 +87,10 @@ download() {
     wget -o "${LOGFILE}" \
       "https://distorm.googlecode.com/files/distorm3.zip" \
       "https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz" \
-      "https://github.com/plusvic/yara/archive/v3.1.0.tar.gz" \
+      "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz" \
       "http://effbot.org/downloads/Imaging-1.1.7.tar.gz" \
       "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.7.tar.gz" \
       "https://bitbucket.org/openpyxl/openpyxl/get/2.0.5.tar.gz" \
-      "https://github.com/ipython/ipython/releases/download/rel-2.1.0/ipython-2.1.0.tar.gz" \
       "http://downloads.volatilityfoundation.org/releases/2.4/volatility-2.4.tar.gz"
     kill_tail
   fi
@@ -115,6 +114,7 @@ verify() {
 
 # Extract the downloaded archives
 extract() {
+  sudo apt-get install unzip 
   for archive in "${ARCHIVES[@]}"; do
     local ext ; ext=$(echo "${archive}" | sed 's|.*\.||')
     if [[ "${ext}" =~ ^(tgz|gz)$ ]]; then
@@ -136,7 +136,7 @@ install() {
   # pycrypto
     cd pycrypto-2.6.1 && py_install
   # yara + yara-python
-    cd yara-3.1.0 && chmod +x bootstrap.sh && ./bootstrap.sh && \
+    cd yara-3.2.0 && chmod +x bootstrap.sh && ./bootstrap.sh && \
       ./configure --enable-magic ; make ; make install
     cd yara-python && py_install && ldconfig && cd "${SETUP_DIR}"
   # OpenPyxl
@@ -148,8 +148,6 @@ install() {
     ln -s -f /usr/lib/$(uname -i)-linux-gnu/libjpeg.so.8 /usr/lib/
   # pytz
     easy_install --upgrade pytz
-  # iPython
-    cd ipython-2.1.0 && py_install
   # SIFT 3.0 check + fix
     sift_fix
   # Volatility
@@ -184,11 +182,12 @@ kill_tail() {
 
 # Install required packages from APT
 aptget_install() {
-  apt-get update
+  apt-get update && \
   apt-get install \
     build-essential libreadline-gplv2-dev libjpeg8-dev zlib1g zlib1g-dev \
     libgdbm-dev libc6-dev libbz2-dev libfreetype6-dev libtool automake \
-    python-dev libjansson-dev libmagic-dev -y --force-yes
+    python-dev libjansson-dev libmagic-dev ipython ipython-notebook -y \
+    --force-yes
 }
 
 # Shorthand for done message
