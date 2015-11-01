@@ -1,11 +1,11 @@
 4n6k_volatility_installer.sh
 ============================
 
-Install Volatility 2.4 for Linux automatically.
+Install Volatility 2.5 for Linux automatically.
 
 What Is It?
 -----------
-`4n6k_volatility_installer.sh` is a bash script that installs Volatility 2.4 (and all dependencies) for Ubuntu Linux with one command.
+`4n6k_volatility_installer.sh` is a bash script that installs Volatility 2.5 (and all dependencies) for Ubuntu Linux with one command.
 
 Why Do I Need It?
 -----------------
@@ -19,8 +19,8 @@ What Does It Do?
 ----------------
 Specifically, 4n6k_volatility_installer.sh does the following:
 
-* Downloads, verifies, extracts, and installs source archives for everything you will need to complete a full installation of Volatility 2.4:
-  * Volatility 2.4
+* Downloads, verifies, extracts, and installs source archives for everything you will need to complete a full installation of Volatility 2.5:
+  * Volatility 2.5
   * diStorm3
   * Yara (+ magic module) + Yara-Python
   * PyCrypto
@@ -41,14 +41,14 @@ In the above example, the following directories will be created:
 
 * /home/dan/volatility_setup 
   * Contains dependency source code and the install_log.txt file.
-* /home/dan/volatility_2.4
-  * Contains the Volatility 2.4 install.
+* /home/dan/volatility_2.5
+  * Contains the Volatility 2.5 install.
 
 Where Can I Download It?
 ------------------------
 You can download the script from this Github page or by right clicking and saving [this link](https://dl.4n6k.com/p/volinux/4n6k_volatility_installer.sh). 
 
-`MD5 Hash: e0bf55dceb15e277deb72031f7118374`
+`SHA256 Hash: 037b39168fbe35208195bcfbd74267ebde0f9c054d737012daf7370b5a66e11a`
 
 Bottom Line?
 ------------
