@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# 4n6k_volatility_installer.sh
-# v1.1.0 (8/28/2014)
+# 46nk_volatility_installer.sh
+# v1.1.3 (10/31/2015)
 # Installs Volatility for Ubuntu Linux with one command.
 # Run this script from the directory in which you'd like to install Volatility.
 # Tested on stock Ubuntu 12.04 + 14.04 + SIFT 3
 # More at http://www.4n6k.com + http://www.volatilityfoundation.org
 
-# Copyright (C) 2014 4n6k (4n6k.dan@gmail.com)
+# Copyright (C) 2015 4n6k (4n6k.dan@gmail.com)
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,19 +28,22 @@ PROGNAME="${0}"
 INSTALL_DIR="${1}"
 SETUP_DIR="${INSTALL_DIR}"/"volatility_setup"
 LOGFILE="${SETUP_DIR}"/"install_vol.log"
-ARCHIVES=('distorm3.zip' 'pycrypto-2.6.1.tar.gz' '2.0.5.tar.gz' \
-          'setuptools-5.7.tar.gz' 'Imaging-1.1.7.tar.gz' \
-          'v3.2.0.tar.gz' 'ipython-2.1.0.tar.gz' 'volatility-2.4.tar.gz'                       )
-HASHES=('2cd594169fc96b4442056b7494c09153' '55a61a054aa66812daf5161a0d5d7eda' \
-        '05df2ec474a40afd5f84dff94392e36f' '81f980854a239d60d074d6ba052e21ed' \
-        'fc14a54e1ce02a0225be8854bfba478e' '920ac91cc9a48eecab688f30e112898f' \
-        '785c7b6364c6a0dd34aa4ea970cf83b9' '4f9ad730fb2174c90182cc29cb249d20' )
+ARCHIVES=('distorm3.zip' 'pycrypto-2.6.1.tar.gz' 'yara-v3.4.0.tar.gz' \
+          'setuptools-5.7.tar.gz' 'openpyxl-2.3.0.tar.gz' \
+          'ipython-2.4.1.tar.gz' 'volatility-2.5.tar.gz'              )
+HASHES=('f5b7a9f5f7fecae9a234f313d141d0348e58f02f4b5f82a137acb08969f87b78' \
+        'f2ce1e989b272cfcb677616763e0a2e7ec659effa67a88aa92b3a65528f60a3c' \
+        '528571ff721364229f34f6d1ff0eedc3cd5a2a75bb94727dc6578c6efe3d618b' \
+        'a8bbdb2d67532c5b5cef5ba09553cea45d767378e42c7003347e53ebbe70f482' \
+        '8ee71caa004e3aa1381d5bba748ada1b061be5126f2372ef90eeaab6386040bc' \
+        '6d350b5c2d3e925b0ff6167658812d720b891e476238d924504e2f7f483e9217' \
+        'b28ad483d4c0baf4b0b6a9162fcb497f6a822294be8b88621f678c15ed433d3d' )
 
 # Program usage dialog
 usage() {
   echo -e "\nHere is an example of how you should run this script:"
   echo -e "  > sudo bash ${PROGNAME} /home/4n6k"
-  echo -e "Result: Volatility will be installed to /home/4n6k/volatility_2.4"
+  echo -e "Result: Volatility will be installed to /home/4n6k/volatility_2.5"
   echo -e "***NOTE*** Be sure to use a FULL PATH for the install directory.\n"
 }
 
@@ -78,32 +81,30 @@ setup() {
 
 # Download Volatility and its dependencies
 download() {
-  if [[ -a "${ARCHIVES[7]}" && $(md5sum "${ARCHIVES[7]}" | cut -d' ' -f1) \
+  if [[ -a "${ARCHIVES[7]}" && $(sha256sum "${ARCHIVES[7]}" | cut -d' ' -f1) \
     == "${HASHES[7]}" ]]; then
       phantom "Files already downloaded. Skipping..."
   else
     phantom "This will take a while. Tailing install_vol.log for progress..."
     tail_log
-    wget -o "${LOGFILE}" \
-      "https://distorm.googlecode.com/files/distorm3.zip" \
-      "https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz" \
-      "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz" \
-      "http://effbot.org/downloads/Imaging-1.1.7.tar.gz" \
-      "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.7.tar.gz" \
-      "https://bitbucket.org/openpyxl/openpyxl/get/2.0.5.tar.gz" \
-      "https://github.com/ipython/ipython/releases/download/rel-2.1.0/ipython-2.1.0.tar.gz" \
-      "http://downloads.volatilityfoundation.org/releases/2.4/volatility-2.4.tar.gz"
+    wget -o "${LOGFILE}" -O distorm3.zip "https://github.com/gdabah/distorm/archive/v3.3.0.zip" && \
+    wget -o "${LOGFILE}" "https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.6.1.tar.gz" && \
+    wget -o "${LOGFILE}" -O yara-v3.4.0.tar.gz "https://github.com/plusvic/yara/archive/v3.4.0.tar.gz" && \
+    wget -o "${LOGFILE}" "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.7.tar.gz" && \
+    wget -o "${LOGFILE}" -O openpyxl-2.3.0.tar.gz "https://bitbucket.org/openpyxl/openpyxl/get/2.3.0.tar.gz" && \
+    wget -o "${LOGFILE}" -O ipython-2.4.1.tar.gz "https://pypi.python.org/packages/source/i/ipython/ipython-2.4.1.tar.gz" && \
+    wget -o "${LOGFILE}" -O volatility-2.5.tar.gz "https://github.com/volatilityfoundation/volatility/archive/2.5.tar.gz"
     kill_tail
   fi
 }
 
-# Verify md5 hashes of the downloaded archives
+# Verify sha256 hashes of the downloaded archives
 verify() {
   local index=0
-  for hard_md5 in "${HASHES[@]}"; do
+  for hard_sha256 in "${HASHES[@]}"; do
     local archive ; archive="${ARCHIVES[$index]}"
-    local archive_md5 ; archive_md5=$(md5sum "${archive}" | cut -d' ' -f1)
-    if [[ "$hard_md5" == "$archive_md5" ]]; then
+    local archive_sha256 ; archive_sha256=$(sha256sum "${archive}" | cut -d' ' -f1)
+    if [[ "$hard_sha256" == "$archive_sha256" ]]; then
       phantom "= Hash MATCH for ${archive}."
       let "index++"
     else
@@ -115,7 +116,7 @@ verify() {
 
 # Extract the downloaded archives
 extract() {
-  sudo apt-get update && sudo apt-get -y install unzip 
+  apt-get update && apt-get install unzip tar -y --force-yes
   for archive in "${ARCHIVES[@]}"; do
     local ext ; ext=$(echo "${archive}" | sed 's|.*\.||')
     if [[ "${ext}" =~ ^(tgz|gz)$ ]]; then
@@ -133,28 +134,24 @@ install() {
   # Python
     aptget_install
   # distorm3
-    cd distorm3 && py_install
+    cd distorm-3.3.0 && py_install
   # pycrypto
     cd pycrypto-2.6.1 && py_install
   # yara + yara-python
-    cd yara-3.2.0 && chmod +x bootstrap.sh && ./bootstrap.sh && \
+    cd yara-3.4.0 && chmod +x bootstrap.sh && ./bootstrap.sh && \
       ./configure --enable-magic ; make ; make install
     cd yara-python && py_install && ldconfig && cd "${SETUP_DIR}"
   # OpenPyxl
     cd setuptools-5.7 && python ez_setup.py && cd "${SETUP_DIR}"
-    cd openpyxl-openpyxl-2ed17dbd3445 && py_install
-  # Python Imaging Library
-    ln -s -f /lib/$(uname -i)-linux-gnu/libz.so.1 /usr/lib/
-    ln -s -f /usr/lib/$(uname -i)-linux-gnu/libfreetype.so.6 /usr/lib/
-    ln -s -f /usr/lib/$(uname -i)-linux-gnu/libjpeg.so.8 /usr/lib/
+    cd openpyxl-openpyxl-17ebc853f530 && py_install
   # pytz
     easy_install --upgrade pytz
   # iPython
-    cd ipython-2.1.0 && py_install
+    cd ipython-2.4.1 && py_install
   # SIFT 3.0 check + fix
     sift_fix
   # Volatility
-    mv -f volatility-2.4 .. ; cd ../volatility-2.4 && chmod +x vol.py
+    mv -f volatility-2.5 .. ; cd ../volatility-2.5 && chmod +x vol.py
     ln -f -s "${PWD}"/vol.py /usr/local/bin/vol.py
     kill_tail
 } &>>"${LOGFILE}"
@@ -185,12 +182,10 @@ kill_tail() {
 
 # Install required packages from APT
 aptget_install() {
-  apt-get update && \
   apt-get install \
     build-essential libreadline-gplv2-dev libjpeg8-dev zlib1g zlib1g-dev \
     libgdbm-dev libc6-dev libbz2-dev libfreetype6-dev libtool automake \
-    python-dev libjansson-dev libmagic-dev -y \
-    --force-yes
+    python-dev libjansson-dev libmagic-dev python-pillow -y --force-yes
 }
 
 # Shorthand for done message
@@ -227,7 +222,7 @@ phantom() {
 main() {
   chk_usage
   setup
-  status "Downloading Volatility 2.4 and dependency source code..."
+  status "Downloading Volatility 2.5 and dependency source code..."
     download && done_msg
   status "Verifying archive hash values..."
     verify && done_msg
