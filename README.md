@@ -28,6 +28,14 @@ An internet connection and a Debian-based Linux distribution. This script has be
   * pytz
 * Adds "vol.py" to your system PATH so that you can run Volatility from any location.
 
+##Installation
+
+You can download the script from the following GitHub page:
+
+https://raw.githubusercontent.com/wzod/volatility_installer/master/volatility_installer.sh
+
+`SHA256 Hash: 95805fde782753dac6473221264d5ba21b006d84ff47014b53eb81876791881e`
+
 ##Usage
 
 Volatility will be installed to the directory you specify.
@@ -42,17 +50,7 @@ In the above example, the following directories will be created:
 * /home/$USER/volatility_2.6
   * Contains the Volatility 2.6 install.
 
-##Installation
-
-You can download the script from the following GitHub page:
-
-https://raw.githubusercontent.com/wzod/volatility_installer/master/volatility_installer.sh
-
-`SHA256 Hash: 95805fde782753dac6473221264d5ba21b006d84ff47014b53eb81876791881e`
-
-Bottom Line?
-------------
-Don't be afraid of the terminal. Read the source for this script and understand how it works. Automation is acceptable only after you understand what is happening behind the scenes.
+##Feedback
 
 If you see a problem with the code or can suggest improvements, please add an issue for tracking (suggestions are always welcomed, too!).
 
