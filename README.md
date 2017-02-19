@@ -1,63 +1,62 @@
-4n6k_volatility_installer.sh
-============================
+# volatility_installer.sh
 
-Install Volatility 2.5 for Linux automatically.
+Install Volatility 2.6 for Linux with one command.
 
-What Is It?
------------
-`4n6k_volatility_installer.sh` is a bash script that installs Volatility 2.5 (and all dependencies) for Ubuntu Linux with one command.
+##Background
+Volatility is an open source framework for analyzing volatile memory (reference: http://www.volatilityfoundation.org/about ). This script installs volatility and all required dependencies leveraging the bash shell.
 
-Why Do I Need It?
------------------
-Compiling source on Linux can be a pain. Dependency hunting wastes time and drives people away from considering Linux builds of cross-platform software. With this script, you can (1) skip all of the dependency frustration, (2) get right into using the newest version of Volatility, and (3) leverage the arguably more powerful and versatile Unix shell. No longer do you have to worry about whether or not you "have everything."
+With this script, you can: 
 
-What's Required?
-----------------
-An internet connection and an APT-based Linux distribution [for the time being]. This script has been tested on stock Ubuntu 12.04 and Ubuntu 14.04. Some testing has been done to support SIFT Workstation 3.0.
+1. Skip all of the dependency frustration
+2. Build volatility and the required dependencies from source
+3. Run the latest version of Volatility
 
-What Does It Do?
-----------------
-Specifically, 4n6k_volatility_installer.sh does the following:
+##Requirements
 
-* Downloads, verifies, extracts, and installs source archives for everything you will need to complete a full installation of Volatility 2.5:
-  * Volatility 2.5
+An internet connection and a Debian-based Linux distribution. This script has been tested on stock Ubuntu 16.04 and Ubuntu 14.04. Some testing has been done to support SIFT Workstation 3.0.
+
+##Capabilities
+
+* Downloads, verifies, extracts, and installs source archives for everything you will need to complete a full installation of Volatility 2.6:
+  * Volatility 2.6
   * diStorm3
   * Yara (+ magic module) + Yara-Python
   * PyCrypto
   * Python Imaging Library + Library Fixes
   * OpenPyxl
-  * IPython
+  * ujson
   * pytz
 * Adds "vol.py" to your system PATH so that you can run Volatility from any location.
 
-How Do I Use It?
-----------------
+##Usage
+
 Volatility will be installed to the directory you specify.
 
 * From a terminal, run: 
-  * `sudo bash 4n6k_volatility_installer.sh /home/dan`
+  * `sudo bash volatility_installer.sh /home/$USER`
 
 In the above example, the following directories will be created:
 
-* /home/dan/volatility_setup 
+* /home/$USER/volatility_setup 
   * Contains dependency source code and the install_log.txt file.
-* /home/dan/volatility_2.5
-  * Contains the Volatility 2.5 install.
+* /home/$USER/volatility_2.6
+  * Contains the Volatility 2.6 install.
 
-Where Can I Download It?
-------------------------
-You can download the script from this Github page or by right clicking and saving [this link](https://dl.4n6k.com/p/volinux/4n6k_volatility_installer.sh). 
+##Installation
 
-`SHA256 Hash: 037b39168fbe35208195bcfbd74267ebde0f9c054d737012daf7370b5a66e11a`
+You can download the script from the following GitHub page:
+
+https://raw.githubusercontent.com/wzod/volatility_installer/master/volatility_installer.sh
+
+`SHA256 Hash: 95805fde782753dac6473221264d5ba21b006d84ff47014b53eb81876791881e`
 
 Bottom Line?
 ------------
 Don't be afraid of the terminal. Read the source for this script and understand how it works. Automation is acceptable only after you understand what is happening behind the scenes.
 
-I'm open to making this script better. If you see a problem with the code or can suggest improvements, let me know and I'll see what I can do.
+If you see a problem with the code or can suggest improvements, please add an issue for tracking (suggestions are always welcomed, too!).
 
-Feedback Thanks
----------------
-@The_IMOL, Joachim Metz, @dunit50, and @iMHLv2.
+##Credits
+Thanks to the Volatility team for all of their contribtions and advancing the field of memory forensics. Go to http://www.volatilityfoundation.org for more info.
 
-Thanks to the Volatility team for writing an amazing tool. Go to http://www.volatilityfoundation.org for more info.
+Special shout-out to @4n6k for the inspiration and contributions with 4n6k_volatility_installer.sh (see https://github.com/4n6k/4n6k_volatility_installer), which was the origination of a large portion of the volatility_installer script.  @4n6k's script was also the catalyst for putting together the installer script for MASTIFF (see https://github.com/wzod/wzod_mastiff_installer ).
